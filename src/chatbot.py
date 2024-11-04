@@ -1,7 +1,7 @@
 import gradio as gr
-from src.agent import MagnusAgent
+from src.agent import ChessAgent
 
-agent = MagnusAgent().get_agent()
+agent = ChessAgent().get_agent()
 
 def agent_response(message, history):
     return agent.chat(message).response

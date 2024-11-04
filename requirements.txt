@@ -4,3 +4,4 @@ pydantic-settings
 llama-index
 llama-index-embeddings-huggingface
 openai
+chess
