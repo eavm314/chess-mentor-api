@@ -24,12 +24,11 @@ chess_expert_tool = QueryEngineTool(
         store_path=SETTINGS.store_path,
         data_dir=SETTINGS.docs_path,
         qa_prompt_tpl=chess_guide_qa_tpl,
-    ).get_query_engine(),
+    ).get_chat_engine(),
     metadata=ToolMetadata(
         name="chess_expert", description=chess_expert_description, return_direct=False
     ),
 )
-
 
 def get_best_move(fen: str) -> dict:
     """

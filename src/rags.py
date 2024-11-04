@@ -8,11 +8,14 @@ from llama_index.core import (
     PromptTemplate,
 )
 
-from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.llms.openai import OpenAI
 
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
+from src.prompts import chess_guide_qa_tpl
+from src.config import get_agent_settings
+
+SETTINGS = get_agent_settings()
 
 class ChessExpertRAG:
     def __init__(
@@ -38,14 +41,10 @@ class ChessExpertRAG:
         index.storage_context.persist(persist_dir=store_path)
         return index
 
-    def get_query_engine(self) -> RetrieverQueryEngine:
-        query_engine = self.index.as_query_engine()
+    def get_chat_engine(self):
+        chat_engine = self.index.as_chat_engine()
 
-        if self.qa_prompt_tpl is not None:
-            query_engine.update_prompts(
-                {"response_synthesizer:text_qa_template": self.qa_prompt_tpl}
-            )
+        return chat_engine
 
-        return query_engine
 
 

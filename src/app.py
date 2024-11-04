@@ -3,21 +3,20 @@ from llama_index.core.agent import ReActAgent
 from functools import cache
 
 from src.models import ApiResponse, ChatApiRequest
-from src.agent import MagnusAgent
+from src.agent import ChessAgent
 
 from src.models import ApiRequest, ApiResponse, Move
 from src.agent import ChessAgent
+
 from src.tools import get_best_move
 from fastapi.middleware.cors import CORSMiddleware
 
 
-@cache
-def get_chat_agent() -> ReActAgent:
-    return MagnusAgent().get_agent()
 
 @cache
 def get_agent() -> ReActAgent:
-    return MagnusAgent().get_agent()
+    return ChessAgent().get_agent()
+
 
 
 app = FastAPI(title="Chess Mentor API")
@@ -29,13 +28,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 @app.get("/")
 def get_health():
@@ -100,7 +92,7 @@ def analyze_player(req: ApiRequest, agent: ReActAgent = Depends(get_agent)):
     )
 
 @app.post("/chat")
-def chat(req: ChatApiRequest, agent: ReActAgent = Depends(get_chat_agent)):
+def chat(req: ChatApiRequest, agent: ReActAgent = Depends(get_agent)):
     response = agent.chat(req.message)
     return ApiResponse(
         message="Chat response generated succesfully",
