@@ -34,3 +34,21 @@ class ChessAgent:
 
     def get_agent(self) -> ReActAgent:
         return self.agent
+
+
+class MagnusAgent:
+    def __init__(self):
+        self.agent = ReActAgent.from_tools(
+            [
+                chess_expert_tool,
+                best_move_tool
+                
+            ],
+            verbose=True,
+        )
+
+        system_prompt = PromptTemplate(magnus_carlsen_prompt_text)
+        self.agent.update_prompts({"agent_worker:system_prompt": system_prompt})
+
+    def get_agent(self) -> ReActAgent:
+        return self.agent
